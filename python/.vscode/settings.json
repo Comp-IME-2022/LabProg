@@ -1,0 +1,18 @@
+{
+    "cSpell.words": [
+        "Anagrama",
+        "Biblioteca",
+        "Calculo",
+        "Fatorial",
+        "Naturais",
+        "Numeros",
+        "Pal",
+        "Palíndromo",
+        "ndromo",
+        "primeiros",
+        "torre"
+    ],
+    "python.autoComplete.extraPaths": [
+        "./InheritanceExercise"
+    ]
+}
