@@ -1,3 +1,8 @@
+#   IME 2022 - LabProg II
+#
+#       Script just testing ploting on python
+#       This is not working propertly :p
+
 import seaborn as sns
 df = sns.load_dataset('iris')
  
