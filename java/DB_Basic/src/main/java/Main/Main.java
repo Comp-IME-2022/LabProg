@@ -30,14 +30,14 @@ public class Main {
         //Connect to MySQL server
         MySQL mysql = new MySQL();
         Connection mysql_con = mysql.connect();
-         
+        
         
         //Connect to MongoDB server
         Mongo mongo = new Mongo();
         MongoClient mongo_con = mongo.connect();
         MongoCollection mongo_coll = mongo.collection(mongo_con);
-         
-
+        
+        
         //Get JSON and set to list
         ObjectMapper objectMapper = new ObjectMapper();
         List<toDo> toDoList = objectMapper.readValue(new URL("https://jsonplaceholder.typicode.com/todos"), new TypeReference<List<toDo>>(){});
