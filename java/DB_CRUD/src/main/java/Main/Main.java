@@ -9,12 +9,13 @@ import DB.Mongo;
 import DB.MySQL;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.ArrayList;
 
 /*
   CREATE SCHEMA `LabProg` ;
@@ -42,11 +43,18 @@ import java.util.ArrayList;
  */
 public class Main {
     public static void main(String[] args) throws IOException, SQLException {
+        /*
         //Connect to MySQL server
         MySQL mysql = new MySQL();
         Connection mysql_con = mysql.connect();
+        */
         
+        //Connect to MongoDB server
+        Mongo mongo = new Mongo();
+        MongoClient mongo_con = mongo.connect();
+        MongoCollection mongo_coll = mongo.collection(mongo_con);
         
+        /*
         //Get JSON and set to list
         ObjectMapper objectMapper = new ObjectMapper();
         List<User> users = objectMapper.readValue(new URL("https://jsonplaceholder.typicode.com/users"), new TypeReference<List<User>>(){});
@@ -55,26 +63,31 @@ public class Main {
         for(User user : users){
             //user.setName("Davi");
             //System.out.println(user);
-            mysql.createUser(mysql_con, user);
-            //
+            //mysql.createUser(mysql_con, user);
+            //mongo.createUser(mongo_coll, user);
         }
-        
-        mysql.deleteUser(mysql_con, 3);
-        mysql.deleteUser(mysql_con, 5);
-        mysql.deleteUser(mysql_con, 7);
+        //System.out.println(mongo.getUser(mongo_coll, 10));
         
         
-        //System.out.println(mysql.getUser(mysql_con, "1"));
         
-        List<User> newUsers = new ArrayList();
-        newUsers = mysql.getAllUsers(mysql_con);
+        List<User> newUsers;
+        //newUsers = mysql.getAllUsers(mysql_con);
+        newUsers = mongo.getAllUsers(mongo_coll);
         if(newUsers!=null){
             for(User user : newUsers){
                 System.out.println(user);
             }
         }
+        */
         
+        User res = mongo.getUser(mongo_coll, 5);
+        res.setName("Davi Pontes");
+        //res.setId(13);
+        //mongo.createUser(mongo_coll, res);
+        //System.out.println(mongo.getUser(mongo_coll, 5));
+        mongo.deleteUser(mongo_coll, 5);
         
-        mysql.close(mysql_con);
+        //mysql.close(mysql_con);
+        mongo.close(mongo_con);
     }
 }
