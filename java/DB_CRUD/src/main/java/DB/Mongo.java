@@ -32,6 +32,8 @@ public class Mongo {
     private String collection;
     private String login;
     private String psw;
+    private MongoClient mongo_con;
+    private MongoCollection mongo_coll;
     
     public Mongo(){
         this.server = "localhost";
@@ -43,13 +45,25 @@ public class Mongo {
         
     }
 
-    public MongoClient connect(){
-        MongoClient client = new MongoClient(new MongoClientURI("mongodb://"+login+":"+psw+"@"+server+":"+port));
-        return client;
+    public MongoClient connect() throws InterruptedException{
+        MongoClient client;
+        for(;;){
+            try{
+                client = new MongoClient(new MongoClientURI("mongodb://"+login+":"+psw+"@"+server+":"+port));
+                mongo_con = client;
+                collection(mongo_con);
+                return client;
+            }catch(Exception e){
+                System.out.println("Error: "+e);
+            }
+            Thread.sleep(1);
+        }
     }
     
     public MongoCollection collection(MongoClient client){
-        return client.getDatabase(db).getCollection(collection);
+        MongoCollection coll = client.getDatabase(db).getCollection(collection);
+        mongo_coll = coll;
+        return coll;
     }
     
     public boolean close(MongoClient con) {
@@ -61,7 +75,7 @@ public class Mongo {
         }
     }
     
-    public boolean createUser(MongoCollection collection, User user){
+    public boolean createUser(User user){
         int res = 0;
         try{
             Document doc = new Document();
@@ -80,19 +94,19 @@ public class Mongo {
             doc.append("companyName",user.getCompany().getName());
             doc.append("catchPhrase",user.getCompany().getCatchPhrase());
             doc.append("bs",user.getCompany().getBs());
-            collection.insertOne(doc);
+            mongo_coll.insertOne(doc);
             doc.clear();            
             res = 1;
         }catch(Exception e){
             System.out.println("Error: "+e);
         }
         if(res>0){
-            System.out.println("User "+user.getId()+" Created!");
+            System.out.println("Usuário "+user.getId()+" Cadastrado!");
         }
         return res>0;
     }
     
-    public boolean updateUser(MongoCollection collection, User user){
+    public boolean updateUser(User user){
         try{
             Document doc = new Document();
             doc.append("_id",user.getId());
@@ -111,15 +125,15 @@ public class Mongo {
             doc.append("catchPhrase",user.getCompany().getCatchPhrase());
             doc.append("bs",user.getCompany().getBs());
 
-            UpdateResult res=collection.updateOne(Filters.eq("_id",user.getId()), new Document("$set", doc));
+            UpdateResult res = mongo_coll.updateOne(Filters.eq("_id",user.getId()), new Document("$set", doc));
             if(res.getModifiedCount()>0){
-                System.out.println("User "+user.getId()+" Updated!");
+                System.out.println("Usuário "+user.getId()+" Atualizado!");
                 return true;
             }else{
                 if(res.getMatchedCount()>0){
-                    System.out.println("User "+user.getId()+" not changed!");
+                    System.out.println("Usuário "+user.getId()+" não alterado!");
                 }else{
-                    System.out.println("User "+user.getId()+" does not exist!");
+                    System.out.println("User "+user.getId()+" não existe!");
                 }
                 return false;
             }
@@ -129,19 +143,19 @@ public class Mongo {
         }
     }
     
-    public boolean deleteUser(MongoCollection collection, Integer userId){
-        DeleteResult res = collection.deleteOne(Filters.eq("_id", userId));
+    public boolean deleteUser(Integer userId){
+        DeleteResult res = mongo_coll.deleteOne(Filters.eq("_id", userId));
         if(res.getDeletedCount()>0){
-            System.out.println("User "+userId+" Deleted!");
+            System.out.println("Usuário "+userId+" Deletado!");
             return true;
         }else{
-            System.out.println("User "+userId+" does not exist!");
+            System.out.println("Usuário "+userId+" não existe!");
             return false;
         }
     }
     
-    public User getUser(MongoCollection collection, Integer userId){
-        MongoCursor<Document> cursor = collection.find(Filters.eq("_id", userId)).iterator();
+    public User getUser(Integer userId){
+        MongoCursor<Document> cursor = mongo_coll.find(Filters.eq("_id", userId)).iterator();
         if(cursor.hasNext()){
             User user = new User();
             Document doc = cursor.next();
@@ -172,17 +186,17 @@ public class Mongo {
             user.setAddress(address);
             user.setCompany(company);
             
-            System.out.println("User "+userId+" Retrieved!");
+            System.out.println("Usuário "+userId+" retornado!");
             
             return user;
         }else{
-            System.out.println("User "+userId+" does not exist!");
+            System.out.println("Usuário "+userId+" não existe!");
             return null;
         }
     }
     
-    public List<User> getAllUsers(MongoCollection collection){
-        MongoCursor<Document> cursor = collection.find().iterator();
+    public List<User> getAllUsers(){
+        MongoCursor<Document> cursor = mongo_coll.find().iterator();
         List<User> users = new ArrayList<User>();
         
         if(cursor.hasNext()){
@@ -218,9 +232,12 @@ public class Mongo {
 
                 users.add(user);
             }
+            
+            System.out.println("Retornado todos os usuários!");
+            
             return users;
         }else{
-            System.out.println("No Users on DB!");
+            System.out.println("O BD não possui usuários cadastrados!");
             return null;
         }
     }

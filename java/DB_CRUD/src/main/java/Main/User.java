@@ -89,7 +89,7 @@ public class User {
     public String toString(){
 
         StringBuilder sb = new StringBuilder();
-        sb.append("\n*********** User ***********\n");
+        sb.append("*********** Usuário ***********\n");
         sb.append("id: "+getId()+"\n");
         sb.append("name: "+getName()+"\n");
         sb.append("username: "+getUsername()+"\n");
@@ -98,7 +98,7 @@ public class User {
         sb.append("phone: "+getPhone()+"\n");
         sb.append("website: "+getWebsite()+"\n");
         sb.append(getCompany()+"\n");
-        sb.append("*****************************");
+        sb.append("*******************************\n");
 
         return sb.toString();
     }
