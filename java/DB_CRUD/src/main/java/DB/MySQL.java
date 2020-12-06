@@ -34,8 +34,8 @@ public class MySQL {
         this.server = "localhost";
         this.port = "3306";
         this.schema = "LabProg";
-        this.login = "davi";
-        this.psw = "Bravo@1998";
+        this.login = "user";
+        this.psw = "pass";
         
     }
 

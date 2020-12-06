@@ -40,8 +40,8 @@ public class Mongo {
         this.port = "27017";
         this.db = "LabProg";
         this.collection = "Users";
-        this.login = "davi";
-        this.psw = "Bravo%401998";
+        this.login = "user";
+        this.psw = "pass";
         
     }
 
