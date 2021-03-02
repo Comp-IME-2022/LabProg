@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+    <head>
+        <title>LabProg III</title>
+        <meta charset="UTF-8">
+    
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="main.js"></script>
+    </head>
+    <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+        <form id="signup-form">
+            <h1 class="mb-3">
+                Cadastro
+            </h1>
+
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" class="form-control" id="name" placeholder="Digite o nome" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Digite o email" required>
+            </div>
+            <div class="form-group">
+                <label for="password1">Senha</label>
+                <input type="password" class="form-control password" id="password1" aria-describedby="password1HelpBlock" placeholder="Digite a senha" required>
+                <small id="password1HelpBlock" class="form-text text-danger">
+                    Sua senha deve possuir no mínimo: caracter maiúsculo, caracter especial e números.
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="password2">Repita a Senha</label>
+                <input type="password" class="form-control password" id="password2" aria-describedby="password2HelpBlock" placeholder="Repita a senha" required>
+                <small id="password2HelpBlock" class="form-text text-danger">
+                    As senhas não conferem.
+                </small>
+            </div>
+            <button id="signup-btn" type="submit" class="btn btn-outline-primary" disabled>Cadastrar</button>
+        </form>
+    </body>
+</html>
