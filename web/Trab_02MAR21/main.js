@@ -1,10 +1,12 @@
 function start() {
+    var name = document.getElementById('name');
+    var email = document.getElementById('email');
     var password1 = document.getElementById('password1');
     var password2 = document.getElementById('password2');
     var passHint1 = document.getElementById('password1HelpBlock');
     var passHint2 = document.getElementById('password2HelpBlock');
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-    var btn = $('#signup-btn')
+    var btn = document.getElementById('signup-btn');
 
     passHint1.style.display = "none";
     passHint2.style.display = "none";
@@ -13,6 +15,7 @@ function start() {
     document.getElementById('signup-form').addEventListener('submit', function(event){
         event.preventDefault();
         console.log("Submit!");
+        sendRequest();
     });
 
     var inputElements = document.getElementsByClassName('password');
@@ -35,13 +38,31 @@ function start() {
 
         if(password1.value!=password2.value){
             passHint2.style.display = "block";
-            btn.attr("disabled", true);
+            btn.setAttribute("disabled", true);
         }else{
             passHint2.style.display = "none";
             if(strong){
-                btn.attr("disabled", false);
+                btn.removeAttribute("disabled");;
             }
         }
+    }
+
+    function sendRequest(){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://127.0.0.1:4000/login', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        xhr.send(JSON.stringify({
+            'name': name.value,
+            'mail': email.value,
+            'password': password1.value 
+        }));
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE){
+                alert(xhr.responseText)
+            }
+        }
+        
     }
 };
 
