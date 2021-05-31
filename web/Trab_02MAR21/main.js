@@ -49,13 +49,14 @@ function start() {
 
     function sendRequest(){
         var xhr = new XMLHttpRequest();
+        var hash = CryptoJS.MD5(password1.value);
         xhr.open('POST', 'http://127.0.0.1:4000/login', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
         xhr.send(JSON.stringify({
             'name': name.value,
             'mail': email.value,
-            'password': password1.value 
+            'password': hash
         }));
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE){
