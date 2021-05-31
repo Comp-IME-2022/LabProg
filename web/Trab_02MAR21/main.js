@@ -56,7 +56,7 @@ function start() {
         xhr.send(JSON.stringify({
             'name': name.value,
             'mail': email.value,
-            'password': hash
+            'password': hash.toString()
         }));
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE){
