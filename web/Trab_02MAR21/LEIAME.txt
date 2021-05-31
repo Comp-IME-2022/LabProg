@@ -1,0 +1,5 @@
+Passos para executar o projeto:
+1. Baixar e instalar o go
+2. Executar o comando go run servidor.go 
+3. Abrir o arquvio main.html
+4. Preencher o formulário corretamente e enviar
